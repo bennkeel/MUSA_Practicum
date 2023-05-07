@@ -238,6 +238,30 @@ hr {
   margin: 20px;
 }
 
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+
+.legend h3 {
+  margin-right: 10px;
+}
+
+.legend .box {
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  display: inline-block;
+}
+
+.legend span {
+  display: inline-block;
+  margin-right: 10px;
+}
+
 /*
 
 .low-v {

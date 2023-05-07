@@ -39,19 +39,27 @@
 
     <div class="search-container" id="searchContainer">
         <h4 class="control-title">Recovery Forecast</h4>
-        <p class="">Search any single address in Philadelpiha County to see the recovery forecast, and adjust the forecast by fire severity.</p>
+
+        <p class="">Adjust the visualization here:</p>
+
+        <!--Create radio buttons for Vacancy, Repairs, and Sales-->
         <div class="control">
-            <div class="input-group">
-                <label for="addressInput">Enter An Address:</label>
-                <span class="search-span">
-                    <input id="addressInput" type="search" class="address-input" placeholder="Enter An Address">
-                </span>
+            <legend for="propertyType">Liklihood of:</legend>
+            <div>
+                <input type="radio" id="varRepair" name="variable" value="permit" checked>
+                <label for="varRepair">Repair</label>
             </div>
-            <p class="footer">Abbreviate directions like "South" as "S" and names like "Street" as "St".</p>
-            <div class="lists-group" >
-                <div id="addressSearchList" class="list-group"></div>
+            <div>
+                <input type="radio" id="varSale" name="variable" value="transfer">
+                <label for="varSale">Sale</label>
             </div>
-        </div>  
+            <div>
+                <input type="radio" id="varVacancy" name="variable" value="vacant">
+                <label for="varVacancy">Vacancy</label>
+            </div>
+        </div>
+
+
 
         <div class="control">
             <label for="spread-range">Select Fire Spread:</label>
@@ -66,12 +74,35 @@
             </input>
             <p id="spreadLabel">Spread Level: 1 <span style="background-color: #F1C82B"></span><br>Limited to Object of Origin</p>
         </div>
-        
+
+        <p class="">Search any single address in Philadelpiha County to see the recovery forecast, and adjust the forecast by fire severity above.</p>
+        <div class="control">
+            <div class="input-group">
+                <label for="addressInput">Enter An Address:</label>
+                <span class="search-span">
+                    <input id="addressInput" type="search" class="address-input" placeholder="Enter An Address">
+                </span>
+            </div>
+            <p class="footer">Abbreviate directions like "South" as "S" and names like "Street" as "St".</p>
+            <div class="lists-group" >
+                <div id="addressSearchList" class="list-group"></div>
+            </div>
+        </div>  
+
         <div class="control">
             <button class="control-button" id="addressLoadButton" type="button">Search</button>
         </div>
     </div>
     <div id="toast" class="toast hidden"><div id="toastMessage"></div></div>
+
+    <div class="legend">
+        <div class="box" style="background-color: #F1C82B" id="legendLow"></div>
+        <span>Low</span>
+        <div class="box" style="background-color: #D55816" id="legendMid"></div>
+        <span>Mid</span>
+        <div class="box" style="background-color: #7B230B" id="legendHigh"></div>
+        <span>High</span>
+    </div>
 
     <script src="https://unpkg.com/papaparse@5.3.2/papaparse.min.js"></script>
     <script src="https://unpkg.com/leaflet.vectorgrid@latest/dist/Leaflet.VectorGrid.bundled.js"></script>
