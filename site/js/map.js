@@ -1,3 +1,5 @@
+import { createPopup, addMarker } from "./popup.js";
+
 //https://api.mapbox.com/styles/v1/keelbn/cl8c2nvmq003114li896sf85z/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoia2VlbGJuIiwiYSI6ImNqaWVseGZjZzA3emMzdnAxM296OTFjNG8ifQ.W2j9Y2mz4t6vGRyKJk_Nyw
 
 const colorsVacant = ["#D1BCA6", "#8F8172", "#3A352F"];
@@ -197,6 +199,8 @@ function initMap() {
         interactive: true,
     }).addTo(map);
 
+    window.parcels = parcels;
+
     changeLegend(document.querySelector('input[name="variable"]:checked').value);
     
     //use leaflet redraw method on points layer when radio or range are changed
@@ -241,11 +245,13 @@ function initMap() {
     //when clicking on a block group, display the name of the block group
     parcels.on('click', function(e) {
         markerLayer.clearLayers();
-        let parcel = e.layer.properties;
-        let parcelName = parcel['address'];
-        let parcelLikelihood = parcel[`spread${range.value}_${document.querySelector('input[name="variable"]:checked').value}`];
-        let popupContent = `<h6>${parcelName}</h6> <h6>Probability: ${parcelLikelihood}</h6>`
-        markerLayer.addLayer(L.popup().setLatLng(e.latlng).setContent(popupContent));
+        // let parcel = e.layer.properties;
+        // let parcelName = parcel['address'];
+        // let parcelLikelihood = parcel[`spread${range.value}_${document.querySelector('input[name="variable"]:checked').value}`];
+        // let popupContent = `<h6>${parcelName}</h6> <h6>Probability: ${parcelLikelihood}</h6>`
+        // markerLayer.addLayer(L.popup().setLatLng(e.latlng).setContent(popupContent));
+        createPopup(e.layer.properties, e.latlng, markerLayer);
+        addMarker(e.latlng, markerLayer);
     });
 
     return map;

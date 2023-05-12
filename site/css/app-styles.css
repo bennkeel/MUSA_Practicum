@@ -207,8 +207,8 @@ hr {
 .toast {
   width: 280px;
   position: absolute;
-  top: 580px;
-  left: 1rem;
+  top: 740px;
+  left: 20px;
   right: 1rem;
   display: flex;
   align-items: center;
@@ -260,6 +260,10 @@ hr {
 .legend span {
   display: inline-block;
   margin-right: 10px;
+}
+
+#spreadLabel {
+  margin-bottom:0;
 }
 
 /*
