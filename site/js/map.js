@@ -5,111 +5,6 @@ const colorsRepair = ["#85C07F", "#4A7246", "#2D4A2A"];
 const colorsSale = ["#AFC6E1", "#517CB1", "#1B3350"];
 const cGray = "#666666";
 
-function styleByPoint(variable, likelihood){
-    if (variable === "vacant") {
-        if (likelihood < 0.05) {
-            return ({ 
-            radius: 5,
-            fill: true,
-            color: colorsVacant[0],
-            fillOpacity: 1,
-            opacity: 1,
-            });
-        } else if (likelihood  >= 0.05 && likelihood < 0.11) {
-            return ({ 
-            radius: 5,
-            fill: true,
-            color: colorsVacant[1],
-            fillOpacity: 1,
-            opacity: 1,
-            }); 
-        } else if (likelihood  >= 0.11) {
-            return ({ 
-            radius: 5,
-            fill: true,
-            color: colorsVacant[2],
-            fillOpacity: 1,
-            }); 
-        } else {
-            return ({ 
-            radius: 5,
-            fill: true,
-            color: cGray,
-            fillOpacity: 1,
-            opacity: 1,
-            });
-        }
-    } else if (variable === "permit") {
-            if (likelihood < 0.21) {
-            return ({ 
-            radius: 5,
-            fill: true,
-            color: colorsRepair[0],
-            fillOpacity: 1,
-            opacity: 1,
-            });
-        } else if (likelihood  >= 0.21 && likelihood < 0.35) {
-            return ({ 
-            radius: 5,
-            fill: true,
-            color: colorsRepair[1],
-            fillOpacity: 1,
-            opacity: 1,
-            }); 
-        } else if (likelihood  >= 0.35) {
-            return ({ 
-            radius: 5,
-            fill: true,
-            color: colorsRepair[2],
-            fillOpacity: 1,
-            opacity: 1,
-            }); 
-        } else {
-            return ({ 
-            radius: 5,
-            fill: true,
-            color: cGray,
-            fillOpacity: 1,
-            opacity: 1,
-            });
-        }
-    } else if (variable === "transfer") {
-            if (likelihood < 0.25) {
-            return ({ 
-            radius: 5,
-            fill: true,
-            color: colorsSale[0],
-            fillOpacity: 1,
-            opacity: 1,
-            });
-        } else if (likelihood  >= 0.25 && likelihood < 0.32) {
-            return ({ 
-            radius: 5,
-            fill: true,
-            color: colorsSale[1],
-            fillOpacity: 1,
-            opacity: 1,
-            }); 
-        } else if (likelihood  >= 0.32) {
-            return ({ 
-            radius: 5,
-            fill: true,
-            color: colorsSale[2],
-            fillOpacity: 1,
-            opacity: 1,
-            }); 
-        } else {
-            return ({ 
-            radius: 5,
-            fill: true,
-            color: cGray,
-            fillOpacity: 1,
-            opacity: 1,
-            });
-        }
-    }
-};
-
 function styleByArea(variable, likelihood){
     if (variable === "vacant") {
         if (likelihood < 0.05) {
@@ -118,7 +13,7 @@ function styleByArea(variable, likelihood){
             fillColor: colorsVacant[0],
             fillOpacity: 0.8,
             opacity: 0.8,
-            color:colorsVacant[2],
+            color:colorsVacant[0],
             });
         } else if (likelihood  >= 0.05 && likelihood < 0.11) {
             return ({ 
@@ -126,7 +21,7 @@ function styleByArea(variable, likelihood){
             fillColor: colorsVacant[1],
             fillOpacity: 0.8,
             opacity: 0.8,
-            color:colorsVacant[2],
+            color:colorsVacant[1],
             }); 
         } else if (likelihood  >= 0.11) {
             return ({ 
@@ -152,7 +47,7 @@ function styleByArea(variable, likelihood){
             fillColor: colorsRepair[0],
             fillOpacity: 0.8,
             opacity: 0.8,
-            color:colorsRepair[2],
+            color:colorsRepair[0],
             });
         } else if (likelihood  >= 0.21 && likelihood < 0.35) {
             return ({ 
@@ -160,7 +55,7 @@ function styleByArea(variable, likelihood){
             fillColor: colorsRepair[1],
             fillOpacity: 0.8,
             opacity: 0.8,
-            color:colorsRepair[2],
+            color:colorsRepair[1],
             }); 
         } else if (likelihood  >= 0.35) {
             return ({ 
@@ -180,23 +75,23 @@ function styleByArea(variable, likelihood){
             });
         }
     } else if (variable === "transfer") {
-            if (likelihood < 0.21) {
+            if (likelihood < 0.25) {
             return ({ 
             fill: true,
             fillColor: colorsSale[0],
             fillOpacity: 0.8,
             opacity: 0.8,
-            color:colorsSale[2],
+            color:colorsSale[0],
             });
-        } else if (likelihood  >= 0.05 && likelihood < 0.11) {
+        } else if (likelihood  >= 0.25 && likelihood < 0.33) {
             return ({ 
             fill: true,
             fillColor: colorsSale[1],
             fillOpacity: 0.8,
             opacity: 0.8,
-            color:colorsSale[2],
+            color:colorsSale[1],
             }); 
-        } else if (likelihood  >= 0.11) {
+        } else if (likelihood  >= 0.33) {
             return ({ 
             fill: true,
             fillColor: colorsSale[2],
@@ -268,13 +163,13 @@ function initMap() {
         }
     };
 
-    let vectorTileStylingAddress = {
+    let vectorTileStylingParcels = {
         
-        prediction_address: (properties) => { 
+        predictions_parcels: (properties) => { 
             let spread = document.querySelector("#spreadRange");
             let variable = document.querySelector('input[name="variable"]:checked').value;
             let likelihood = properties[`spread${spread.value}_${variable}`];
-            return styleByPoint(variable, likelihood);
+            return styleByArea(variable, likelihood);
         }
     };    
 
@@ -295,10 +190,10 @@ function initMap() {
     }).addTo(map);
 
     // Address
-    const points = L.vectorGrid.protobuf("https://storage.googleapis.com/fire_recovery_data_lake/tiles/properties/{z}/{x}/{y}.pbf", {
+    const parcels = L.vectorGrid.protobuf("https://storage.googleapis.com/fire_recovery_data_lake/tiles/parcels/{z}/{x}/{y}.pbf", {
         maxZoom: 18,
         minZoom: 16,
-        vectorTileLayerStyles: vectorTileStylingAddress,
+        vectorTileLayerStyles: vectorTileStylingParcels,
         interactive: true,
     }).addTo(map);
 
@@ -309,7 +204,7 @@ function initMap() {
         radio.addEventListener('change', function(){
             nhoods.redraw();
             blocks.redraw();
-            points.redraw();
+            parcels.redraw();
             changeLegend(document.querySelector('input[name="variable"]:checked').value);
         })
     })
@@ -317,7 +212,7 @@ function initMap() {
     range.addEventListener('change', function(){
         nhoods.redraw();
         blocks.redraw();
-        points.redraw();
+        parcels.redraw();
         changeLegend(document.querySelector('input[name="variable"]:checked').value);
     })
 
@@ -344,9 +239,13 @@ function initMap() {
     });
 
     //when clicking on a block group, display the name of the block group
-    points.on('click', function(e) {
-        //T is undefined for some reason...
-        //call popup here...
+    parcels.on('click', function(e) {
+        markerLayer.clearLayers();
+        let parcel = e.layer.properties;
+        let parcelName = parcel['address'];
+        let parcelLikelihood = parcel[`spread${range.value}_${document.querySelector('input[name="variable"]:checked').value}`];
+        let popupContent = `<h6>${parcelName}</h6> <h6>Probability: ${parcelLikelihood}</h6>`
+        markerLayer.addLayer(L.popup().setLatLng(e.latlng).setContent(popupContent));
     });
 
     return map;
