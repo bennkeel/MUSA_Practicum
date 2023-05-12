@@ -63,6 +63,7 @@ function addMarker(lnglat, markerLayer){
 
 function getPrediction(info, outcome){
     //get type of variable from info
+    console.log(info);
     let column = `spread${document.getElementById("spreadRange").value}_${outcome}`
     let prediction = info[column];
     return prediction;
@@ -150,10 +151,96 @@ function createPopup(info, lnglat, markerLayer){
       
     const closeBtn = document.getElementById("popupClose");
     closeBtn.addEventListener("click", zoomOut);
-    
 }
+
+function createNhoodPopup(info, variable, lnglat, markerLayer){
+
+    markerLayer.clearLayers();
+    console.log(info);
+    if (info[`spread1_${variable}`]) {
+        //predictions
+
+        let spread = document.getElementById("spreadRange").value;
+
+        console.log(info[`spread${spread}_${variable}`]);
+        console.log(variable)
+
+        let likelihood = labelPrediction(info, variable);
+        console.log(likelihood);
+
+        L.popup(lnglat, {
+            content: 
+            `<div class="popup-content-container">
+                <div class="popup-title-container">
+                    <h5>${info['neighborhood']}</h5><br>
+                    <p class="interpretiveDescr">Neighborhood's average 2 year ${variable} likelihood with Level ${spread} Fire:</p>
+                    <span class="pred-label">${likelihood}</span>
+                </div> 
+                <div>
+                    <hr>
+                    <p class="footer-note">Read our <a href="index.html#scrolly">Case Study</a> and <a href="index.html#recommendations">Recommendations</a> to learn more about these different outcomes and interventions.</p>
+                </div>
+            </div>`})
+            .addTo(markerLayer);
+    } else {
+        L.popup(lnglat, {
+            content: 
+            `<div class="popup-content-container">
+                <div class="popup-title-container">
+                    <h5>${info['neighborhood']}</h5><br>
+                    <p class="interpretiveDescr">This area does not have enough property data for fire recovery predictions.</p>
+                </div> 
+            </div>`})
+            .addTo(markerLayer);
+    }
+}
+
+function createBlockgroupPopup(info, variable, lnglat, markerLayer){
+
+    markerLayer.clearLayers();
+    console.log(info);
+    if (info[`spread1_${variable}`]) {
+        //predictions
+
+        let spread = document.getElementById("spreadRange").value;
+
+        console.log(info[`spread${spread}_${variable}`]);
+        console.log(variable)
+
+        let likelihood = labelPrediction(info, variable);
+        console.log(likelihood);
+
+        L.popup(lnglat, {
+            content: 
+            `<div class="popup-content-container">
+                <div class="popup-title-container">
+                    <h5>${info['block_group']}</h5><br>
+                    <p class="interpretiveDescr">Block groups's average 2 year ${variable} likelihood with Level ${spread} Fire:</p>
+                    <span class="pred-label">${likelihood}</span>
+                </div> 
+                <div>
+                    <hr>
+                    <p class="footer-note">Read our <a href="index.html#scrolly">Case Study</a> and <a href="index.html#recommendations">Recommendations</a> to learn more about these different outcomes and interventions.</p>
+                </div>
+            </div>`})
+            .addTo(markerLayer);
+    } else {
+        L.popup(lnglat, {
+            content: 
+            `<div class="popup-content-container">
+                <div class="popup-title-container">
+                    <h5>${info['block_group']}</h5><br>
+                    <p class="interpretiveDescr">This area does not have enough property data for fire recovery predictions.</p>
+                </div> 
+            </div>`})
+            .addTo(markerLayer);
+    }
+}
+
 
 export {
     addMarker,
-    createPopup
+    createPopup,
+    createNhoodPopup,
+    createBlockgroupPopup,
 }

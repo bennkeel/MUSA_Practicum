@@ -1,4 +1,4 @@
-import { createPopup, addMarker } from "./popup.js";
+import { createPopup, createNhoodPopup, createBlockgroupPopup, addMarker } from "./popup.js";
 
 //https://api.mapbox.com/styles/v1/keelbn/cl8c2nvmq003114li896sf85z/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoia2VlbGJuIiwiYSI6ImNqaWVseGZjZzA3emMzdnAxM296OTFjNG8ifQ.W2j9Y2mz4t6vGRyKJk_Nyw
 
@@ -199,8 +199,7 @@ function initMap() {
         interactive: true,
     }).addTo(map);
 
-    window.parcels = parcels;
-
+    //Update the lengend to the radio button's current variable
     changeLegend(document.querySelector('input[name="variable"]:checked').value);
     
     //use leaflet redraw method on points layer when radio or range are changed
@@ -224,36 +223,32 @@ function initMap() {
 
     //when clicking on a neighborhood, display the name of the neighborhood
     nhoods.on('click', function(e) {
-        markerLayer.clearLayers();
-        let nhood = e.layer.properties;
-        let nhoodName = nhood['neighborhood'];
-        let nhoodLikelihood = nhood[`spread${range.value}_${document.querySelector('input[name="variable"]:checked').value}`];
-        let popupContent = `<h6>${nhoodName}</h6><h6>Probability: ${nhoodLikelihood}</h6>`
-        markerLayer.addLayer(L.popup().setLatLng(e.latlng).setContent(popupContent));
+        // markerLayer.clearLayers();
+        // let nhood = e.layer.properties;
+        // let nhoodName = nhood['neighborhood'];
+        // let nhoodLikelihood = nhood[`spread${range.value}_${document.querySelector('input[name="variable"]:checked').value}`];
+        // let popupContent = `<h6>${nhoodName}</h6><h6>Probability: ${nhoodLikelihood}</h6>`
+        // markerLayer.addLayer(L.popup().setLatLng(e.latlng).setContent(popupContent));
+        createNhoodPopup(e.layer.properties, document.querySelector('input[name="variable"]:checked').value, e.latlng, markerLayer);
     });
 
     //when clicking on a block group, display the name of the block group
     blocks.on('click', function(e) {
         markerLayer.clearLayers();
-        let nhood = e.layer.properties;
-        let nhoodName = nhood['block_group'];
-        let nhoodLikelihood = nhood[`spread${range.value}_${document.querySelector('input[name="variable"]:checked').value}`];
-        let popupContent = `<h6>${nhoodName}</h6> <h6>Probability: ${nhoodLikelihood}</h6>`
-        markerLayer.addLayer(L.popup().setLatLng(e.latlng).setContent(popupContent));
+        // let nhood = e.layer.properties;
+        // let nhoodName = nhood['block_group'];
+        // let nhoodLikelihood = nhood[`spread${range.value}_${document.querySelector('input[name="variable"]:checked').value}`];
+        // let popupContent = `<h6>${nhoodName}</h6> <h6>Probability: ${nhoodLikelihood}</h6>`
+        // markerLayer.addLayer(L.popup().setLatLng(e.latlng).setContent(popupContent));
+        createBlockgroupPopup(e.layer.properties, document.querySelector('input[name="variable"]:checked').value, e.latlng, markerLayer);
     });
 
     //when clicking on a block group, display the name of the block group
     parcels.on('click', function(e) {
         markerLayer.clearLayers();
-        // let parcel = e.layer.properties;
-        // let parcelName = parcel['address'];
-        // let parcelLikelihood = parcel[`spread${range.value}_${document.querySelector('input[name="variable"]:checked').value}`];
-        // let popupContent = `<h6>${parcelName}</h6> <h6>Probability: ${parcelLikelihood}</h6>`
-        // markerLayer.addLayer(L.popup().setLatLng(e.latlng).setContent(popupContent));
-        createPopup(e.layer.properties, e.latlng, markerLayer);
         addMarker(e.latlng, markerLayer);
+        createPopup(e.layer.properties, e.latlng, markerLayer);
     });
-
     return map;
 }
 

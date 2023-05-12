@@ -40,11 +40,11 @@
     <div class="search-container" id="searchContainer">
         <h4 class="control-title">Recovery Forecast</h4>
 
-        <p>This map view illustrates the forecasted differences in fire recovery among neighborhoods, block groups, and individual parcels after 2 years. Zoom in to see more detail. Click each area to see more information.</p>
+        <p>This map view illustrates the forecasted differences in fire recovery among neighborhoods, block groups, and individual parcels after 2 years. Zoom in to see more detail. Click each area to see more information, or search an address below:</p>
 
         <!--Create radio buttons for Vacancy, Repairs, and Sales-->
         <div class="control">
-            <legend for="propertyType"><label>Choose the outcome shown:</label></legend>
+            <legend for="propertyType"><label>Choose the outcome on the map:</label></legend>
             <div>
                 <input type="radio" id="varRepair" name="variable" value="permit" checked>
                 <label for="varRepair">Repair</label>
@@ -72,8 +72,6 @@
             </input>
             <p id="spreadLabel">Spread Level: 1 <span style="background-color: #F1C82B"></span><br>Limited to Object of Origin</p>
         </div>
-
-        <p class="">Search any single address in Philadelpiha County to see its detailed recovery forecast. Adjust the forecast by fire severity above.</p>
         <div class="control">
             <div class="input-group">
                 <label for="addressInput">Enter An Address:</label>
@@ -87,7 +85,7 @@
             </div>
         </div>  
 
-        <div class="control">
+        <div class="control" id="searchControl">
             <button class="control-button" id="addressLoadButton" type="button">Search</button>
         </div>
     </div>
